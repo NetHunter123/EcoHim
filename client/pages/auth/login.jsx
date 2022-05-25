@@ -19,7 +19,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import Router from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../actions";
+import { userService } from "../../services/user-service";
 
 function Copyright(props) {
   return (
@@ -30,7 +30,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="#">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -42,15 +42,6 @@ function Copyright(props) {
 const theme = createTheme();
 
 const Login = () => {
-  const [axdata, setAxdata] = useState(null);
-  const dispatch = useDispatch();
-  const loginedUser = useSelector((state) => state.auth.loginData);
-
-  const useAxiosPost = async (url, props) => {
-    console.log("AxiosPost");
-    await dispatch(await loginUser(url, props));
-    return loginedUser;
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -59,20 +50,21 @@ const Login = () => {
     const pass = data.get("password");
     console.log("handleSubmit");
 
-    await useAxiosPost("http://localhost:1337/api/auth/local", {
+    const status = await userService.loginUser( {
       identifier: `${email}`,
       password: `${pass}`,
     });
+
+    console.log("login status",status)
 
     const temp = localStorage.getItem("user");
     const user = JSON.parse(temp);
 
     console.log("Congratulation:", user);
-    console.log("jwt:", user.jwt);
-    user.jwt ? Router.push("/home") : console.log("Error login");
-  };
+    console.log("jwt:", user?.jwt);
 
-  console.log("Redux:", loginedUser);
+    user?.jwt ? Router.push("/home") : console.log("Error login");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -136,10 +128,10 @@ const Login = () => {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+              {/*<FormControlLabel*/}
+              {/*  control={<Checkbox value="remember" color="primary" />}*/}
+              {/*  label="Remember me"*/}
+              {/*/>*/}
               <Button
                 type="submit"
                 fullWidth
@@ -155,7 +147,7 @@ const Login = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="./auth/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -1,47 +1,73 @@
-import { BehaviorSubject } from 'rxjs';
-import getConfig from 'next/config';
-import Router from 'next/router';
+import Router from "next/router";
 
-import { fetchWrapper } from 'helpers';
-
-const { publicRuntimeConfig } = getConfig();
-console.log("publicRuntimeConfig",publicRuntimeConfig)
-const baseUrl = `${publicRuntimeConfig.apiUrl}/users`;
-const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
+import axios from "axios";
 
 export const userService = {
-  user: userSubject.asObservable(),
-  get userValue () { return userSubject.value },
-  login,
+  loginUser,
   logout,
-  register,
+  registerUser,
   getAll,
   getById,
   update,
   delete: _delete
 };
 
-function login(username, password) {
-  return fetchWrapper.post(`${baseUrl}/authenticate`, { username, password })
-    .then(user => {
+function loginRed(username, password) {
+  return fetchWrapper
+    .post(`${baseUrl}/authenticate`, { username, password })
+    .then((user) => {
       // publish user to subscribers and store in local storage to stay logged in between page refreshes
       userSubject.next(user);
-      localStorage.setItem('user', JSON.stringify(user));
-
+      localStorage.setItem("user", JSON.stringify(user));
       return user;
     });
 }
 
-function logout() {
-  // remove user from local storage, publish null to user subscribers and redirect to login page
-  localStorage.removeItem('user');
-  userSubject.next(null);
-  Router.push('/account/login');
+export async function loginUser (config) {
+  console.log("Login user tut");
+  return await axios
+    .post("http://localhost:1337/api/auth/local", config)
+    .then((data) => {
+      const response = JSON.stringify(data.data);
+      console.log("AxiosQuery", data.data);
+      localStorage.setItem("user", response);
+      console.log("Axios ok");
+      return response ? true : false;
+    })
+    .catch((e) => {
+      console.log("Faild fetch, ERROR: ", e);
+    });
+};
+
+export async function registerUser(config){
+  console.log("Register user tut");
+  return await axios
+    .post("http://localhost:1337/api/auth/local/register", config)
+    .then((data) => {
+      const response = JSON.stringify(data.data);
+      console.log("AxiosQueryRegister", data.data);
+      localStorage.setItem("user", response);
+      console.log("Axios register ok");
+      return response ? true : false;
+    })
+    .catch((e) => {
+      console.log("Faild fetch, ERROR: ", e);
+    });
 }
 
-function register(user) {
-  return fetchWrapper.post(`${baseUrl}/register`, user);
+
+function logout() {
+  // remove user from local storage, publish null to user subscribers and redirect to login page
+  localStorage.removeItem("user");
+  userSubject.next(null);
+  Router.push("/account/login");
 }
+
+
+
+// function registerUser(user) {
+//   return fetchWrapper.post(`${baseUrl}/register`, user);
+// }
 
 function getAll() {
   return fetchWrapper.get(baseUrl);
@@ -52,19 +78,18 @@ function getById(id) {
 }
 
 function update(id, params) {
-  return fetchWrapper.put(`${baseUrl}/${id}`, params)
-    .then(x => {
-      // update stored user if the logged in user updated their own record
-      if (id === userSubject.value.id) {
-        // update local storage
-        const user = { ...userSubject.value, ...params };
-        localStorage.setItem('user', JSON.stringify(user));
+  return fetchWrapper.put(`${baseUrl}/${id}`, params).then((x) => {
+    // update stored user if the logged in user updated their own record
+    if (id === userSubject.value.id) {
+      // update local storage
+      const user = { ...userSubject.value, ...params };
+      localStorage.setItem("user", JSON.stringify(user));
 
-        // publish updated user to subscribers
-        userSubject.next(user);
-      }
-      return x;
-    });
+      // publish updated user to subscribers
+      userSubject.next(user);
+    }
+    return x;
+  });
 }
 
 // prefixed with underscored because delete is a reserved word in javascript

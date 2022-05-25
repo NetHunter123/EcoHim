@@ -20,12 +20,6 @@
       "configurable": false,
       "required": true
     },
-    "email": {
-      "type": "email",
-      "minLength": 6,
-      "configurable": false,
-      "required": true
-    },
     "provider": {
       "type": "string",
       "configurable": false
@@ -63,11 +57,19 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "goods": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::good.good",
-      "mappedBy": "user"
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "required": true,
+      "unique": true
+    },
+    "firstname": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lastname": {
+      "type": "string",
+      "minLength": 1
     }
   }
 }
