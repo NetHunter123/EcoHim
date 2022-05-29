@@ -20,29 +20,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Router from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { userService } from "../../services/user-service";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../../components/Copyright";
 
 const theme = createTheme();
 
 const Login = () => {
-
+  let submitting = false;
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,13 +33,13 @@ const Login = () => {
     const pass = data.get("password");
     console.log("handleSubmit");
 
-    const status = await userService.loginUser( {
+    const status = await userService.loginUser({
       identifier: `${email}`,
       password: `${pass}`,
     });
 
-    console.log("login status",status)
-
+    console.log("login status", status);
+    status ? (submitting = true) : (submitting = false);
     const temp = localStorage.getItem("user");
     const user = JSON.parse(temp);
 
@@ -138,7 +121,7 @@ const Login = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                {submitting ? 'In progress…' : 'Sign In'}
               </Button>
               <Grid container>
                 <Grid item xs>
@@ -147,7 +130,7 @@ const Login = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="./auth/register" variant="body2">
+                  <Link href="./register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
