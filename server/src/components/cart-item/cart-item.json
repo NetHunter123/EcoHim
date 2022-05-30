@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_cart_item_cart_items",
+  "info": {
+    "displayName": "CartItem",
+    "icon": "cart-plus"
+  },
+  "options": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "count": {
+      "type": "integer",
+      "default": 1
+    }
+  }
+}

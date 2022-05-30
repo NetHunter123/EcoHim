@@ -20,6 +20,64 @@
       "type": "uid",
       "targetField": "title",
       "required": true
+    },
+    "valueType": {
+      "type": "enumeration",
+      "enum": [
+        "грн",
+        "грн/кг"
+      ],
+      "default": "грн"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "saleType": {
+      "type": "enumeration",
+      "enum": [
+        "Тільки оптом",
+        "Оптом і в роздріб"
+      ],
+      "default": "Оптом і в роздріб"
+    },
+    "availability": {
+      "type": "boolean",
+      "default": false
+    },
+    "description": {
+      "type": "text"
+    },
+    "application": {
+      "type": "richtext"
+    },
+    "productNature": {
+      "type": "richtext"
+    },
+    "specification": {
+      "displayName": "Specification",
+      "type": "component",
+      "repeatable": true,
+      "component": "specification.specification"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Клей ПВА в розфасовці",
+        "Клей ПВА дисперсія в промисловій тарі",
+        "Будівельні оздоблювальні матеріали",
+        "Контрактне виробництво",
+        "Трубопровідна та запірна арматура"
+      ],
+      "required": true
     }
   }
 }

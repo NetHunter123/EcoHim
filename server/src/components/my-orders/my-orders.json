@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_my_orders_my_orders",
+  "info": {
+    "displayName": "myOrders",
+    "icon": "money-check"
+  },
+  "options": {},
+  "attributes": {
+    "orderItem": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

@@ -70,6 +70,17 @@
     "lastname": {
       "type": "string",
       "minLength": 1
+    },
+    "cartItem": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cart-item.cart-item"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "userUID"
     }
   }
 }

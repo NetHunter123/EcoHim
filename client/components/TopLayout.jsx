@@ -170,6 +170,7 @@ export default function TopLayout({ children }) {
         exit={{ opacity: 0 }}
         initial="initial"
         animate="animate"
+        bgcolor={"#E1E1E1"}
       >
         <CssBaseline />
         <AppBar className={classes.Appclass} position="fixed" open={open}>

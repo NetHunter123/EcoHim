@@ -11,6 +11,7 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Stack,
   Typography,
 } from "@mui/material";
 import NextLink from "next/link";
@@ -36,140 +37,64 @@ const Index = () => {
               return (
                 <>
                   <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "100%", width:"100%" }}>
-                      <CardActionArea>
+                    <Card
+                      sx={{
+                        maxWidth: "100%",
+                        width: "100%",
+                        borderRadius: "10px",
+                      }}
+                    >
+                      <CardActionArea
+                        onClick={() =>
+                          router.push("/products/" + attributes.slug)
+                        }
+                      >
                         <CardMedia
                           component="img"
                           height="140"
                           image={
                             "http://localhost:1337" +
-                            attributes.image.data.attributes.url
+                            attributes?.image.data.attributes?.url
                           }
-                          alt="green iguana"
+                          alt={attributes?.image.data.attributes?.alternativeText}
                         />
-                        <CardContent>
+                        <CardContent style={{ padding: "10px 10px 6px" }}>
                           <Typography gutterBottom variant="h5" component="div">
-                            {attributes.title}
+                            {attributes?.title}
                           </Typography>
+                          {/*<Stack direction={"row"} justifyContent={"space-between"}>*/}
+                          {/*  <Typography variant={"caption"} component="div">*/}
+                          {/*    {attributes?.availability*/}
+                          {/*      ? "є в наявності"*/}
+                          {/*      : "немає в наявності"}*/}
+                          {/*  </Typography>*/}
+                          {/*  <Typography variant={"caption"} style={{display:"block", wordWrap:"wrap"}} component="div">*/}
+                          {/*    {attributes?.saleType}*/}
+                          {/*  </Typography>*/}
+                          {/*</Stack>*/}
+                          <Box style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap"}}>
+                              <Typography variant={"caption"} component="div">
+                                {attributes?.availability
+                                  ? "є в наявності"
+                                  : "немає в наявності"}
+                              </Typography>
+                              <Typography variant={"caption"} style={{display:"block", wordWrap:"wrap"}} component="div">
+                                {attributes?.saleType}
+                              </Typography>
+                          </Box>
                           <Typography variant="body2" color="text.secondary">
-                            {attributes.price + " " + attributes.valueType}
+                            {attributes?.price + " " + attributes?.valueType}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Додати до Корзини
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "33%" }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={
-                            "http://localhost:1337" +
-                            attributes.image.data.attributes.url
-                          }
-                          alt="green iguana"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {attributes.title}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {attributes.price + " " + attributes.valueType}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Додати до Корзини
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "33%" }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={
-                            "http://localhost:1337" +
-                            attributes.image.data.attributes.url
-                          }
-                          alt="green iguana"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {attributes.title}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {attributes.price + " " + attributes.valueType}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Додати до Корзини
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "33%" }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={
-                            "http://localhost:1337" +
-                            attributes.image.data.attributes.url
-                          }
-                          alt="green iguana"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {attributes.title}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {attributes.price + " " + attributes.valueType}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
-                          Додати до Корзини
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Card sx={{ maxWidth: "33%" }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={
-                            "http://localhost:1337" +
-                            attributes.image.data.attributes.url
-                          }
-                          alt="green iguana"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {attributes.title}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {attributes.price + " " + attributes.valueType}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button size="small" color="primary">
+                      <CardActions style={{ padding: "0px 3px 8px 3px" }}>
+                        <Button
+                          size="small"
+                          variant={"contained"}
+                          fullWidth
+                          style={{ borderRadius: "10px" }}
+                          color="primary"
+                        >
                           Додати до Корзини
                         </Button>
                       </CardActions>
