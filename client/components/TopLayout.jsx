@@ -29,6 +29,8 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useState } from "react";
 import { Collapse } from "@mui/material";
 import Head from "next/head";
+import { useDispatch } from "react-redux";
+import {GetProductFetch, ProductFetch} from "../actions";
 
 const drawerWidth = 340;
 
@@ -107,9 +109,7 @@ const useStyles = makeStyles((theme) => ({
     top: "0",
     zIndex: "100",
   },
-  drawerWrapper: {
-
-  },
+  drawerWrapper: {},
 }));
 
 export default function TopLayout({ children }) {
@@ -117,7 +117,7 @@ export default function TopLayout({ children }) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [categoryOpen, setCategoryOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const hovers = {
     initial: {
@@ -154,12 +154,6 @@ export default function TopLayout({ children }) {
 
   const handleDrawerClose = () => {
     setOpen(false);
-    open && setCategoryOpen(false);
-  };
-
-  const categoryClick = () => {
-    console.log("CAtstat:", categoryOpen);
-    setCategoryOpen(!categoryOpen);
   };
 
   return (
@@ -205,12 +199,14 @@ export default function TopLayout({ children }) {
             <LoginBtn></LoginBtn>
           </Toolbar>
         </AppBar>
-        <Box className={classes.drawerWrapper} sx={{width: "66px"}} sm={{width: "74px"}}> </Box>
-        <Drawer
-          className={classes.sideBar}
-          variant="permanent"
-          open={open}
+        <Box
+          className={classes.drawerWrapper}
+          sx={{ width: "66px" }}
+          sm={{ width: "74px" }}
         >
+          {" "}
+        </Box>
+        <Drawer className={classes.sideBar} variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "rtl" ? (
@@ -246,64 +242,33 @@ export default function TopLayout({ children }) {
                 </ListItemButton>
               </NextLink>
             </ListItem>
-            {categoryOpen && <Divider />}
-
-            <ListItem
-              onClick={categoryClick}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-                sx={{
-                  flexWrap: "wrap",
-                  minHeight: 25,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                {/*<Box style={{ display: "flex" }}>*/}
-                <ListItemIcon
+            <ListItem disablePadding sx={{ display: "block" }}>
+              <NextLink href="/products" passHref>
+                <ListItemButton
+                  onClick={() => {
+                    // dispatch(GetProductFetch("http://localhost:1337/api/products"))
+                  }}
                   sx={{
-                    minWidth: 0,
-                    marginRight: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  <CategoryIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ opacity: open ? 1 : 0, display: !open && "none" }}
-                >
-                  Категорії
-                </ListItemText>
-                {/*{open?categoryOpen ? <ExpandLess /> : <ExpandMore />:""}*/}
-                {/*</Box>*/}
-                {categoryOpen ? (
-                  <ExpandLess style={{ display: "block", margin: "0 auto" }} />
-                ) : (
-                  <ExpandMore style={{ display: "block", margin: "0 auto" }} />
-                )}
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CategoryIcon />
+                  </ListItemIcon>
+                  <ListItemText sx={{ opacity: open ? 1 : 0 }}>
+                    Категорії
+                  </ListItemText>
+                </ListItemButton>
+              </NextLink>
             </ListItem>
-            <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <NextLink href="/" passHref>
-                  <ListItemButton sx={{ pl: !open ? 2.5 : 4 }}>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: categoryOpen ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <HomeIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="ПВА дисперсія" />
-                  </ListItemButton>
-                </NextLink>
-              </List>
-              <Divider />
-            </Collapse>
             <ListItem disablePadding sx={{ display: "block" }}>
               <NextLink href="/contacts" passHref>
                 <ListItemButton

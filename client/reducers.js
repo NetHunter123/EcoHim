@@ -1,52 +1,16 @@
 import { combineReducers } from "redux";
 import * as types from "./types";
 
-// COUNTER REDUCER
-const counterReducer = (state = 0, { type }) => {
-  switch (type) {
-    case types.Auth:
-
-    case types.INCREMENT:
-      return state + 1;
-    case types.DECREMENT:
-      return state - 1;
-    case types.RESET:
-      return 0;
-    default:
-      return state;
-  }
+const productsInitial = {
+  products: [],
 };
 
-// INITIAL TIMER STATE
-const initialTimerState = {
-  lastUpdate: 0,
-  light: false,
-};
-
-// TIMER REDUCER
-const timerReducer = (state = initialTimerState, { type, payload }) => {
-  switch (type) {
-    case types.TICK:
-      return {
-        lastUpdate: payload.ts,
-        light: !!payload.light,
-      };
-    default:
-      return state;
-  }
-};
-
-const authInitial = {
-  loginData: {}
-};
-
-const authReducer =(state = authInitial, { type, payload }) => {
+const productReducer = (state = productsInitial, { type, payload }) => {
   console.log("payload", payload);
   switch (type) {
-    case types.Auth:
-     console.log("type", type);
-
-      return { ...state, loginData: payload.loginDataUser };
+    case types.PRODUCT:
+      console.log("type", type);
+      return { ...state, products: payload.productsData };
     default:
       return state;
   }
@@ -54,9 +18,7 @@ const authReducer =(state = authInitial, { type, payload }) => {
 
 // COMBINED REDUCERS
 const reducers = {
-  auth: authReducer,
-  counter: counterReducer,
-  timer: timerReducer,
+  products: productReducer,
 };
 
 export default combineReducers(reducers);
