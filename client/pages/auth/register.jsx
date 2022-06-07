@@ -73,7 +73,7 @@ const Register = () => {
     console.log("Congratulation:", user || "");
     console.log("jwt:", user?.jwt);
 
-    user?.jwt ? Router.push("/home") : console.log("Error register");
+    user?.jwt ? Router.push("/") : console.log("Error register");
   };
 
   return (

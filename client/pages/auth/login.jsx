@@ -46,7 +46,7 @@ const Login = () => {
     console.log("Congratulation:", user);
     console.log("jwt:", user?.jwt);
 
-    user?.jwt ? Router.push("/home") : console.log("Error login");
+    user?.jwt ? Router.push("/") : console.log("Error login");
   };
 
   return (

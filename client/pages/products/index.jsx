@@ -27,10 +27,10 @@ import Counter from "../../components/Counter";
 
 const Index = () => {
   const products = useSelector((state) => state.products.products);
-  const cartItemsRedux = useSelector((state) => state.cart.cartItems);
+  // const cartItemsRedux = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const router = useRouter();
-  const cartItems=[]
+  const cartItems = [];
 
   useEffect(() => {
     dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
@@ -38,15 +38,21 @@ const Index = () => {
 
   const AddToCart = (e) => {
     console.log("click", e);
-    cartItems.push(e);
+    // products.map(({ attributes }) => {
+    let inCart
+      cartItems.map((item) => {
+        if (item.slug===e.slug){
+          inCart=true
+        }
+      });
+    !inCart && cartItems.push(e);
+    // });
+
     console.log("cartItemsindex", cartItems);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     // dispatch(setCartItems(cartItems));
   };
 
-  useEffect(() => {
-    console.log("Change");
-  }, []);
   const fiterProduct = (filterText) => {
     dispatch(
       GetProductFetch(
@@ -55,25 +61,25 @@ const Index = () => {
     );
   };
 
-  const inCart = (slug) => {
-    let prodState;
-    cartItems.map((item) => {
-      console.log("item.slug", item.slug);
-      console.log("slug", slug);
-      if (item.slug === slug) {
-        prodState = true;
-      } else {
-        prodState = false;
-      }
-    });
-    return prodState;
-  };
+  // const inCart = (slug) => {
+  //   let prodState;
+  //   cartItems.map((item) => {
+  //     console.log("item.slug", item.slug);
+  //     console.log("slug", slug);
+  //     if (item.slug === slug) {
+  //       prodState = true;
+  //     } else {
+  //       prodState = false;
+  //     }
+  //   });
+  //   return prodState;
+  // };
 
   console.log("products", products);
   return (
     <>
       <MainLayout>
-        <Grid container spacing={2} sx={{p:3}}>
+        <Grid container spacing={2} sx={{ p: 3 }}>
           <Grid item container xs={9} spacing={2}>
             {products.map(({ attributes }) => {
               return (
@@ -175,11 +181,10 @@ const Index = () => {
                           onClick={() => {
                             AddToCart(attributes);
                           }}
-                          disabled={inCart(attributes.slug)}
+                          disabled={!attributes?.availability}
                         >
                           Додати до Корзини
                         </Button>
-
                       </CardActions>
                     </Card>
                   </Grid>
@@ -187,7 +192,7 @@ const Index = () => {
               );
             })}
           </Grid>
-          <Grid item xs={3} style={{position:"relative"}}>
+          <Grid item xs={3} style={{ position: "relative" }}>
             <Box
               style={{
                 backgroundColor: "white",

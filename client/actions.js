@@ -13,8 +13,8 @@ export const GetProductFetch = (url,config={}) => {
 
 export const setCartItems = (cartItems) => {
   console.log("cartItems action tut");
-  return (dispatch) => {
-      dispatch({ type: types.CART_ITEMS, payload: { cartItems: cartItems } });
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  return async (dispatch) => {
+      await dispatch({ type: types.CART_ITEMS, payload: { cartItems: cartItems } });
+      // localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 };
