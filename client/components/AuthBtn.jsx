@@ -16,27 +16,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginBtn = () => {
+const AuthBtn = ({children,text,...props}) => {
   const classes = useStyles();
 
   return (
     <>
       <Button
         className={classes.btn}
-        href={"../auth/login"}
-        variant={"outlined"}
-        color={"primary"}
-        sx={{}}
+        {...props}
       >
-        <AccountCircleIcon
-          sx={{ display: "block", color: "white", marginRight: "5px" }}
-        />
+        {children}
         <Typography paragraph sx={{ margin: "0", color: "white" }}>
-          Sign In
+          {text}
         </Typography>
       </Button>
     </>
   );
 };
 
-export default LoginBtn;
+export default AuthBtn;

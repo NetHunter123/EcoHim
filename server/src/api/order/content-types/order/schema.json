@@ -13,9 +13,10 @@
   "pluginOptions": {},
   "attributes": {
     "orderItem": {
-      "type": "json"
+      "type": "json",
+      "required": true
     },
-    "userUID": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",

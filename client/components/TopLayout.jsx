@@ -17,7 +17,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
-import LoginBtn from "./LoginBtn";
+import AuthBtn from "./AuthBtn";
 import Logo from "./Logo";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
@@ -25,12 +25,14 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import CategoryIcon from "@mui/icons-material/Category";
 import NextLink from "next/link";
 import MenuItem from "./MenuItem";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, ShoppingCart } from "@mui/icons-material";
 import { useState } from "react";
 import { Collapse } from "@mui/material";
 import Head from "next/head";
 import { useDispatch } from "react-redux";
-import {GetProductFetch, ProductFetch} from "../actions";
+import { GetProductFetch, ProductFetch } from "../actions";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useRouter } from "next/router";
 
 const drawerWidth = 340;
 
@@ -109,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
     top: "0",
     zIndex: "100",
   },
+
   drawerWrapper: {},
 }));
 
@@ -118,6 +121,7 @@ export default function TopLayout({ children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const hovers = {
     initial: {
@@ -158,12 +162,6 @@ export default function TopLayout({ children }) {
 
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <Box
         sx={{ display: "flex" }}
         component={motion.div}
@@ -197,7 +195,32 @@ export default function TopLayout({ children }) {
             </IconButton>
 
             <Logo />
-            <LoginBtn></LoginBtn>
+            <NextLink href="/cart" passHref>
+              <AuthBtn
+                onClick={() => router.push("/cart")}
+                variant={"outlined"}
+                color={"primary"}
+                style={{
+                  marginRight: "15px",
+                  padding: "10px",
+                }}
+              >
+                <ShoppingCart sx={{ display: "block", color: "white" }} />
+              </AuthBtn>
+            </NextLink>
+
+            <NextLink href="/auth/login" passHref>
+              <AuthBtn
+                variant={"outlined"}
+                color={"primary"}
+                sx={{}}
+                text={"Sign IN"}
+              >
+                <AccountCircleIcon
+                  sx={{ display: "block", color: "white", marginRight: "5px" }}
+                />
+              </AuthBtn>
+            </NextLink>
           </Toolbar>
         </AppBar>
         <Box
@@ -324,7 +347,7 @@ export default function TopLayout({ children }) {
         <Box
           component="main"
           style={{ minHeight: "calc(100vh - 100px)" }}
-          sx={{ flexGrow: 1, p: 3 }}
+          sx={{ flexGrow: 1 }}
         >
           <DrawerHeader />
           {/*<div style={{ overflowX: "hidden" }}>*/}

@@ -12,39 +12,7 @@ import beautiMaterials from "../public/images/beautificationMaterials.jpg";
 import buildingPalette from "../public/images/palette.jpeg";
 import pipeline from "../public/images/pipeline.jpeg";
 import handshake from "../public/images/handshake.jpg";
-
-const useStyles = makeStyles((theme) => ({
-  categoryBox: {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: "20px",
-    minHeight: "28vh",
-    padding: "20px",
-    overflow: "hidden",
-  },
-  imageCategory: {
-    borderRadius: "20px",
-  },
-  textBoxWrapper: {
-    position: "relative",
-  },
-  textBox: {
-    position: "absolute",
-    borderRadius: "20px",
-    padding: "10px",
-    overflow: "hidden",
-    top: "0",
-    bottom: "0",
-    left: "0",
-    right: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    textAlign: "center",
-    alignItems: "center",
-    backgroundColor: "#00000075",
-    color: "white",
-  },
-}));
+import useStyles from "../styles/homeStyle"
 
 const Index = () => {
   let easing = [0.6, -0.05, 0.01, 0.99];
@@ -92,7 +60,7 @@ const Index = () => {
   return (
     <>
       <MainLayout>
-        <Grid container rowSpacing={1}>
+        <Grid container rowSpacing={1} sx={{p:3}}>
           <Grid item container xs={12} columnSpacing={1}>
             <Grid item xs={8}>
               <div className={classes.textBoxWrapper}>

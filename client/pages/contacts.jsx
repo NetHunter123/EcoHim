@@ -26,7 +26,7 @@ const Contacts = () => {
   return (
     <>
       <MainLayout>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{p:3}}>
           <Grid item xs={4}>
             <Typography component={"h3"} className={classes.sectionTitle}>
               Контакти:
