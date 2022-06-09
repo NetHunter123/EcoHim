@@ -55,29 +55,49 @@
 //
 // export default Counter;
 import React, { useState } from "react";
+import {Typography} from "@mui/material";
 
-const Counter = function () {
-  const [count, setCount] = useState(0);
+const Counter = ({price}) =>{
+  const [count, setCount] = useState(1);
 
   function inc() {
-    setCount(count + 1);
+    setCount((prev)=>{
+      return prev + 1
+    });
   }
-
+  //
   function dec() {
-    setCount(count - 1);
+    setCount((prev)=>{
+     return  prev>1 && prev - 1
+    });
   }
 
   return (
-    <div style={{display:"flex"}
-    }>
-      <p>{count}</p>
-      <button onClick={inc} style={{height:"20px"}} type="">
+    <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography style={{marginRight:"15px"}}>
+        Кількість замовлення
+      </Typography>
+      <button
+        onClick={inc}
+        style={{ height: "20px" }}
+        type=""
+      >
         +
       </button>
-      <button onClick={dec} style={{height:"20px"}} type="">
+      <p style={{margin:"0"}}>{count}</p>
+      <button onClick={dec} style={{ height: "20px" }} type="">
         -
       </button>
+      <p style={{textAlign:"center",margin:"0",padding:"0"}}>{price * count}</p>
     </div>
+    </>
   );
 };
 

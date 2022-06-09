@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthBtn = ({children,text,...props}) => {
+const NavigationBtn = ({children,text,...props}) => {
   const classes = useStyles();
 
   return (
@@ -34,4 +34,4 @@ const AuthBtn = ({children,text,...props}) => {
   );
 };
 
-export default AuthBtn;
+export default NavigationBtn;

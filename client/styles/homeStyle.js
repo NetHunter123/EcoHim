@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textBoxWrapper: {
     position: "relative",
+    cursor:"pointer"
   },
   textBox: {
     position: "absolute",

@@ -16,7 +16,6 @@ const productReducer = (state = productsInitial, { type, payload }) => {
   }
 };
 
-
 const cartInitial = {
   cartItems: [],
 };
@@ -32,10 +31,31 @@ const cartReducer = (state = cartInitial, { type, payload }) => {
       return state;
   }
 };
+
+const comboBoxState = {
+  CitiesNP: [],
+  WareHousesNP: [],
+};
+
+const comboBox = (state = comboBoxState, { type, payload }) => {
+  console.log("type:", type);
+  console.log("payload:", payload?.dataNPresp);
+  // console.log("loading:", load)
+  switch (type) {
+    case types.SET_CITIES:
+      return { ...state, CitiesNP: payload.dataNP };
+    case types.SET_WAREHOUSES:
+      return { ...state, WareHousesNP: payload.dataNP };
+    default:
+      return state;
+  }
+};
+
 // COMBINED REDUCERS
 const reducers = {
   products: productReducer,
-  cart:cartReducer
+  cart: cartReducer,
+  combobox: comboBox,
 };
 
 export default combineReducers(reducers);

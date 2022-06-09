@@ -21,7 +21,7 @@ import {
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import Available from "../../components/Available";
-import AuthBtn from "../../components/AuthBtn";
+import NavigationBtn from "../../components/NavigationBtn";
 import CategoryBtn from "../../components/CategoryBtn";
 import Counter from "../../components/Counter";
 
@@ -32,19 +32,22 @@ const Index = () => {
   const router = useRouter();
   const cartItems = [];
 
+
   useEffect(() => {
+    products.length === 0 &&
     dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
   }, []);
+
 
   const AddToCart = (e) => {
     console.log("click", e);
     // products.map(({ attributes }) => {
-    let inCart
-      cartItems.map((item) => {
-        if (item.slug===e.slug){
-          inCart=true
-        }
-      });
+    let inCart;
+    cartItems.map((item) => {
+      if (item.slug === e.slug) {
+        inCart = true;
+      }
+    });
     !inCart && cartItems.push(e);
     // });
 
@@ -61,27 +64,13 @@ const Index = () => {
     );
   };
 
-  // const inCart = (slug) => {
-  //   let prodState;
-  //   cartItems.map((item) => {
-  //     console.log("item.slug", item.slug);
-  //     console.log("slug", slug);
-  //     if (item.slug === slug) {
-  //       prodState = true;
-  //     } else {
-  //       prodState = false;
-  //     }
-  //   });
-  //   return prodState;
-  // };
-
   console.log("products", products);
   return (
     <>
       <MainLayout>
         <Grid container spacing={2} sx={{ p: 3 }}>
           <Grid item container xs={9} spacing={2}>
-            {products.map(({ attributes }) => {
+            {products?.map(({ attributes }) => {
               return (
                 <>
                   <Grid item xs={4}>
@@ -203,22 +192,32 @@ const Index = () => {
                 padding: "20px",
                 position: "fixed",
                 right: "10px",
+
               }}
             >
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                style={{
-                  marginBottom: "20px",
-                  fontSize: "24px",
-
-                  fontWeight: 600,
-                  fontFamily: "Montserrat",
-                }}
-              >
-                Категорії
-              </Typography>
+              <Box style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom: "20px",}}>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: 600,
+                    fontFamily: "Montserrat",
+                  }}
+                >
+                  Категорії
+                </Typography>
+                <CategoryBtn
+                  onClick={() => {
+                    dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
+                  }}
+                  sx={{
+                    width: "fit-content",
+                  }}
+                  text={"Всі товари"}
+                ></CategoryBtn>
+              </Box>
               <CategoryBtn
                 onClick={() => {
                   fiterProduct("Клей ПВА в розфасовці");
@@ -245,15 +244,6 @@ const Index = () => {
                   width: "100%",
                 }}
                 text={"Будівельні оздоблювальні матеріали"}
-              ></CategoryBtn>
-              <CategoryBtn
-                onClick={() => {
-                  fiterProduct("Контрактне виробництво");
-                }}
-                sx={{
-                  width: "100%",
-                }}
-                text={"Контрактне виробництво"}
               ></CategoryBtn>
               <CategoryBtn
                 onClick={() => {

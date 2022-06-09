@@ -13,30 +13,70 @@ import {
   Typography,
 } from "@mui/material";
 import Available from "../components/Available";
-import {useDispatch, useSelector} from "react-redux";
-import {setCartItems} from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartItems } from "../actions";
+import Counter from "../components/Counter";
+import Checkout from "../components/Checkout";
 
 const Cart = () => {
   const router = useState();
   const dispatch = useDispatch();
-  const cartItems = useSelector((state)=>state.cart.cartItems)
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const getItems = () => {
     const getCartItems = JSON.parse(localStorage.getItem("cartItems"));
     console.log("getcartItemsinCart", getCartItems);
-    dispatch(setCartItems(getCartItems))
-    return getCartItems
+
+    const updateCartItems = getCartItems?.map((item) => {
+      return { ...item, count: 1 };
+    });
+    console.log("updateCartItems", updateCartItems);
+    dispatch(setCartItems(updateCartItems));
+    // return getCartItems;
   };
-  // let cartItems = getItems()
-  // const uku =JSON.parse(localStorage.getItem("asasdd"))
-  // console.log("asasdd",uku)
+  useEffect(() => {
+    getItems();
+  }, []);
+  console.log("itemsinCart", cartItems);
 
+  // const [count, setCount] = useState(1);
 
-  useEffect(()=>{
-    getItems()
-    // console.log("getcartItemsinCart",getItems())
+  const inc = (count) => {
+    return count + 1;
+  };
 
-  })
-  // console.log("cartItemsinCart",cartItems)
+  function dec() {
+    // setCount((prev)=>{
+    //   return  prev>1 && prev - 1
+    // });
+  }
+
+  const orderList = () => {
+    let totalPrice = 0;
+    const orderListText = cartItems?.map((item, i) => {
+      totalPrice += +(item.price * item.count);
+      return `
+     Товар №${i + 1}\n
+     Назва: ${item.title} - знаходиться в категорії ${item.category},\n
+     Ціна за одну штуку:${item.price}, Замовлена кількість:${item.count},\n
+     До сплати за товар №${i + 1}: ${item.price * item.count}. 
+     `;
+    });
+    console.log("orderListText", orderListText);
+    let sendText = "";
+    orderListText.forEach((item) => {
+      sendText += `${item}\n`;
+    });
+
+    sendText += `Загальна сума:${totalPrice}`;
+    console.log("sendText", sendText);
+    return {sendText,orderListText};
+  };
+
+  const dell=(slug)=>{
+    const filteredItems = cartItems.filter((item)=> item.slug != slug)
+    console.log("filteredItems",filteredItems)
+    dispatch(setCartItems(filteredItems));
+  }
   return (
     <MainLayout>
       <Box
@@ -45,7 +85,7 @@ const Cart = () => {
           display: "flex",
           justifyContent: "center",
         }}
-        sx={{p:3}}
+        sx={{ p: 3 }}
       >
         <Box
           style={{
@@ -59,7 +99,7 @@ const Cart = () => {
             flexDirection: "column",
           }}
         >
-          <Box style={{ marginBottom: "20px" }}>
+          <Box style={{ marginBottom: "36px" }}>
             <Typography
               fontSize={24}
               fontWeight={600}
@@ -68,114 +108,131 @@ const Cart = () => {
               Корзина
             </Typography>
           </Box>
-          <Stack spacing={2}>
-            {cartItems
-              ? cartItems?.map((attributes) => {
-                  return (
-                    <>
-                      <Grid item xs={4}>
-                        <Card
-                          sx={{
-                            maxWidth: "100%",
-                            width: "100%",
-                            borderRadius: "10px",
-                            height: "200px",
-                            padding: "10px",
+          <Grid
+            container
+            rowSpacing={2}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              minHeight: "85%",
+            }}
+          >
+            {cartItems ? (
+              cartItems?.map((attributes) => {
+                return (
+                  <Grid
+                    container
+                    xs={12}
+                    style={{ minHeight: "200px", marginBottom: "15px" }}
+                  >
+                    <Card
+                      sx={{
+                        maxWidth: "100%",
+                        width: "100%",
+                        borderRadius: "10px",
+                        minHeight: "200px",
+                        maxHeight: "250px",
+
+                        display: "flex",
+                        alignItems: "center",
+                        fontFamily: "'Montserrat', sans-serif",
+                      }}
+                    >
+                      <Grid item xs={5}>
+                        <CardMedia
+                          component="img"
+                          height="200px"
+                          image={
+                            "http://localhost:1337" +
+                            attributes?.image.data.attributes?.url
+                          }
+                          alt={
+                            attributes?.image.data.attributes?.alternativeText
+                          }
+                          style={{ borderRadius: "10px" }}
+                        />
+                      </Grid>
+                      <Grid item xs={7}>
+                        <Box
+                          style={{
                             display: "flex",
-                            fontFamily: "'Montserrat', sans-serif",
+                            height: "100%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexDirection: "column",
+                            padding: "10px",
                           }}
                         >
-                          <CardActionArea
-                            onClick={() =>
-                              router.push("/products/" + attributes.slug)
-                            }
+                          <Typography
+                            paragraph
+                            variant="h5"
+                            component="div"
                             style={{
-                              height: "100%",
-                              display: "flex",
-
-                              borderRadius: "10px",
+                              fontSize: "18px",
+                              fontWeight: 600,
+                              display: "block",
+                              wordWrap: "wrap",
+                              marginBottom: "10px",
                             }}
                           >
-                            <CardMedia
-                              component="img"
-                              height="200px"
-                              width="200px"
-                              image={
-                                "http://localhost:1337" +
-                                attributes?.image.data.attributes?.url
-                              }
-                              alt={
-                                attributes?.image.data.attributes
-                                  ?.alternativeText
-                              }
-                              style={{ borderRadius: "10px" }}
-                            />
-                            <CardContent
-                              style={{
-                                padding: "10px 10px 6px",
-                                width: "100%",
-                                height: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="div"
-                                style={{
-                                  marginBottom: "auto",
-                                  fontSize: "18px",
+                            {attributes?.title}
+                          </Typography>
 
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {attributes?.title}
-                              </Typography>
-                              <Box
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  flexWrap: "wrap",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                <Available
-                                  available={attributes?.availability}
-                                />
-                                <Typography
-                                  variant={"caption"}
-                                  style={{ display: "block", wordWrap: "wrap" }}
-                                  component="div"
-                                  style={{ fontSize: "14px" }}
-                                >
-                                  {attributes?.saleType}
-                                </Typography>
-                              </Box>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                style={{ fontSize: "14px" }}
-                              >
-                                {attributes?.price +
-                                  " " +
-                                  attributes?.valueType}
-                              </Typography>
-                            </CardContent>
-                          </CardActionArea>
-                          <CardActions
-                            style={{ padding: "0px 3px 8px 3px" }}
-                          ></CardActions>
-                        </Card>
+                          <Box
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-around",
+                              width: "100%",
+                              flexWrap:"wrap",
+                            }}
+                          >
+                            <Typography
+                              variant={"caption"}
+                              style={{
+                                display: "block",
+                                wordWrap: "wrap",
+                                fontSize: "16px",
+                                marginRight: "15px",
+                              }}
+                              component="div"
+                            >
+                              {attributes?.saleType}
+                            </Typography>
+
+                            <Typography
+                              variant="body2"
+                              style={{ fontSize: "16px" }}
+                            >
+                              Ціна за штуку:
+                              {attributes?.price + " " + attributes?.valueType}
+                            </Typography>
+                          </Box>
+                          <Box style={{ display: "flex", justifyContent: "space-around",width:"100%" }}>
+                            <Counter price={attributes.price} />
+                            <Button onClick={()=>{
+                              dell(attributes.slug)
+                            }
+                            }>Видалити</Button>
+                          </Box>
+                        </Box>
                       </Grid>
-                    </>
-                  );
-                })
-              : "ваша корзина пуста"}
-          </Stack>
-          <Box style={{ marginTop: "auto", backgroundColor: "green" }}>
-            Оформити замовлення
-          </Box>
+                    </Card>
+                  </Grid>
+                );
+              })
+            ) : (
+              <Typography style={{ margin: "auto 0" }}>
+                ваша корзина пуста
+              </Typography>
+            )}
+          </Grid>
+          {/*<Button onClick={()=>{*/}
+          {/*  console.log(console.log("attributes.count", cartItems))*/}
+          {/*}} style={{ marginTop: "auto", backgroundColor: "green",color:"white" }}>*/}
+          {/*  Оформити замовлення*/}
+          {/*</Button>*/}
+          <Checkout text={orderList} />
         </Box>
       </Box>
     </MainLayout>

@@ -17,7 +17,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
-import AuthBtn from "./AuthBtn";
+import NavigationBtn from "./NavigationBtn";
 import Logo from "./Logo";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
@@ -196,7 +196,7 @@ export default function TopLayout({ children }) {
 
             <Logo />
             <NextLink href="/cart" passHref>
-              <AuthBtn
+              <NavigationBtn
                 onClick={() => router.push("/cart")}
                 variant={"outlined"}
                 color={"primary"}
@@ -206,11 +206,11 @@ export default function TopLayout({ children }) {
                 }}
               >
                 <ShoppingCart sx={{ display: "block", color: "white" }} />
-              </AuthBtn>
+              </NavigationBtn>
             </NextLink>
 
             <NextLink href="/auth/login" passHref>
-              <AuthBtn
+              <NavigationBtn
                 variant={"outlined"}
                 color={"primary"}
                 sx={{}}
@@ -219,7 +219,7 @@ export default function TopLayout({ children }) {
                 <AccountCircleIcon
                   sx={{ display: "block", color: "white", marginRight: "5px" }}
                 />
-              </AuthBtn>
+              </NavigationBtn>
             </NextLink>
           </Toolbar>
         </AppBar>
