@@ -30,10 +30,18 @@ const Index = () => {
   // const cartItemsRedux = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const router = useRouter();
-  const cartItems = [];
+  let cartItems = [];
 
 
   useEffect(() => {
+    try {
+      cartItems = JSON.parse(localStorage.getItem("cartItems"));
+      console.log("Try",cartItems)
+    }catch (e) {
+      console.log(e)
+      cartItems = []
+      console.log("ErrorCatch",cartItems,"Error",e)
+    }
     products.length === 0 &&
     dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
   }, []);
@@ -144,9 +152,8 @@ const Index = () => {
                             <Available available={attributes?.availability} />
                             <Typography
                               variant={"caption"}
-                              style={{ display: "block", wordWrap: "wrap" }}
+                              style={{ display: "block", wordWrap: "wrap",fontSize: "14px"  }}
                               component="div"
-                              style={{ fontSize: "14px" }}
                             >
                               {attributes?.saleType}
                             </Typography>

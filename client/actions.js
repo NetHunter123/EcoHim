@@ -15,6 +15,7 @@ export const GetProductFetch = (url,config={}) => {
 export const setCartItems = (cartItems) => {
   console.log("cartItems action tut");
   return async (dispatch) => {
+    console.log("cartItems action dispatch",cartItems)
       await dispatch({ type: types.CART_ITEMS, payload: { cartItems: cartItems } });
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };

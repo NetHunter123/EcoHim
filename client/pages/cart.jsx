@@ -23,7 +23,14 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const getItems = () => {
-    const getCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    let getCartItems
+    try {
+      getCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    }catch (e) {
+      console.log(e)
+      getCartItems = []
+    }
+
     console.log("getcartItemsinCart", getCartItems);
 
     const updateCartItems = getCartItems?.map((item) => {
@@ -38,18 +45,6 @@ const Cart = () => {
   }, []);
   console.log("itemsinCart", cartItems);
 
-  // const [count, setCount] = useState(1);
-
-  const inc = (count) => {
-    return count + 1;
-  };
-
-  function dec() {
-    // setCount((prev)=>{
-    //   return  prev>1 && prev - 1
-    // });
-  }
-
   const orderList = () => {
     let totalPrice = 0;
     const orderListText = cartItems?.map((item, i) => {
@@ -63,11 +58,15 @@ const Cart = () => {
     });
     console.log("orderListText", orderListText);
     let sendText = "";
-    orderListText.forEach((item) => {
-      sendText += `${item}\n`;
-    });
+    if (cartItems != undefined && cartItems.length != 0) {
+      orderListText?.forEach((item) => {
+        sendText += `${item}\n`;
+      });
+        sendText += `Загальна сума:${totalPrice}`;
+    }else {
+      sendText = " "
+    }
 
-    sendText += `Загальна сума:${totalPrice}`;
     console.log("sendText", sendText);
     return {sendText,orderListText};
   };
@@ -117,7 +116,7 @@ const Cart = () => {
               minHeight: "85%",
             }}
           >
-            {cartItems ? (
+            {cartItems?.length != 0 && cartItems != undefined ? (
               cartItems?.map((attributes) => {
                 return (
                   <Grid
@@ -182,9 +181,10 @@ const Cart = () => {
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              justifyContent: "space-around",
+                              justifyContent: "space-between",
                               width: "100%",
                               flexWrap:"wrap",
+                              marginBottom:"10px"
                             }}
                           >
                             <Typography
@@ -204,12 +204,12 @@ const Cart = () => {
                               variant="body2"
                               style={{ fontSize: "16px" }}
                             >
-                              Ціна за штуку:
+                              Базова ціна:
                               {attributes?.price + " " + attributes?.valueType}
                             </Typography>
                           </Box>
-                          <Box style={{ display: "flex", justifyContent: "space-around",width:"100%" }}>
-                            <Counter price={attributes.price} />
+                          <Box style={{ display: "flex", justifyContent: "space-between",width:"100%" }}>
+                            <Counter price={attributes.price} item={attributes} />
                             <Button onClick={()=>{
                               dell(attributes.slug)
                             }
