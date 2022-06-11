@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MainLayout from "../../layout/MainLayout";
-import {Box, Button, CardMedia, Divider, Grid, Stack, Typography} from "@mui/material";
+import {Box, Button, CardMedia, Divider, Grid, Stack, Typography, useMediaQuery} from "@mui/material";
 import axios from "axios";
 import Available from "../../components/Available";
 import { GetProductFetch } from "../../actions";
@@ -8,15 +8,14 @@ import { useDispatch } from "react-redux";
 import NextLink from "next/link";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import {useTheme} from "@mui/material/styles";
 const Product = ({ product }) => {
   const { attributes } = product[0];
   const dispatch = useDispatch();
-
+  const theme = useTheme();
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   let cartItems;
-  console.log(
-    "attributes?.image.data.attributes?.alternativeText",
-    attributes?.image.data.attributes?.alternativeText
-  );
 
   useEffect(() => {
     try {
@@ -63,34 +62,37 @@ const Product = ({ product }) => {
           container
           style={{
             minHeight: "inherit",
-            width: "80%",
+            width: smDown?"95%":"80%",
           }}
         >
           <Grid
             item
             container
             style={{
-              padding: "30px 20px",
+              padding:  smDown? "15px" : "30px 20px",
               backgroundColor: "#fff",
               borderRadius: "20px",
-              marginBottom: "25px",
+              marginBottom: mdDown? "10px":"25px",
             }}
-            columnSpacing={2}
+            columnSpacing={mdDown?0:2}
           >
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <CardMedia
                 component="img"
-                height="350px"
+                height={
+                !mdDown? "350px":
+                !smDown? "270px":"200px"
+              }
                 width="100%"
                 image={
                   "http://localhost:1337" +
-                  attributes?.image.data.attributes?.url
+                  attributes?.image.data?.attributes?.url
                 }
-                alt={attributes?.image.data.attributes?.alternativeText}
-                style={{ borderRadius: "10px" }}
+                alt={attributes?.image.data?.attributes?.alternativeText}
+                style={{ borderRadius: "10px",marginBottom: mdDown?"15px":"0" }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Box
                 style={{
                   display: "flex",
@@ -106,7 +108,7 @@ const Product = ({ product }) => {
                   component="div"
                   style={{
                     marginBottom: "15px",
-                    fontSize: "24px",
+                    fontSize:  smDown?"20px":"24px",
                     fontWeight: 600,
                   }}
                 >
@@ -115,8 +117,9 @@ const Product = ({ product }) => {
                 <Box
                   style={{
                     display: "flex",
+                    flexWrap:"wrap",
                     alignItems: "center",
-                    marginBottom: "20px",
+                    marginBottom: mdDown? "0px":"20px",
                   }}
                 >
                   <Box style={{ marginRight: "15px" }}>
@@ -141,10 +144,10 @@ const Product = ({ product }) => {
                   style={{
                     padding: "6px 0px",
                     textTransform: "none",
-                    fontSize: "20px",
+                    fontSize:  smDown?"18px":"20px",
                     display: "flex",
                     width: "fit-content",
-                    marginBottom: "15px",
+                    marginBottom: mdDown? "0px":"15px",
                   }}
                 >
                   <LocalPhoneIcon style={{ marginRight: "10px" }} />
@@ -157,8 +160,8 @@ const Product = ({ product }) => {
                       width: "fit-content",
                       padding: "6px 0px",
                       textTransform: "none",
-                      fontSize: "20px",
-                      marginBottom: "15px",
+                      fontSize:  smDown?"18px":"20px",
+                      marginBottom: mdDown? "0px":"15px",
                     }}
                   >
                     <MyLocationIcon style={{ marginRight: "10px" }} /> Адреса та
@@ -168,7 +171,7 @@ const Product = ({ product }) => {
 
                 <Typography
                   variant="body2"
-                  style={{ fontSize: "20px", marginBottom: "20px" }}
+                  style={{  fontSize:  smDown?"18px":"20px", marginBottom: mdDown? "10px":"20px" }}
                 >
                   Ціна: {attributes?.price + " " + attributes?.valueType}
                 </Typography>
@@ -176,7 +179,7 @@ const Product = ({ product }) => {
                   size="small"
                   variant={"contained"}
                   fullWidth
-                  style={{ borderRadius: "10px" }}
+                  style={{  fontSize:  smDown?"16px":"20px",borderRadius: "10px" }}
                   color="primary"
                   onClick={() => {
                     AddToCart(attributes);
@@ -191,9 +194,9 @@ const Product = ({ product }) => {
           <Grid
             item
             container
-            columnSpacing={2}
+            columnSpacing={mdDown?0:2}
             style={{
-              padding: "30px 20px",
+              padding:  smDown? "8px":"30px 20px",
               backgroundColor: "#fff",
               borderRadius: "20px",
             }}
@@ -203,7 +206,7 @@ const Product = ({ product }) => {
                 <Typography
                   variant="body2"
                   style={{
-                    fontSize: "24px",
+                    fontSize:  smDown?"18px":"24px",
                     fontWeight: 600,
                     marginBottom: "10px",
                   }}
@@ -212,7 +215,7 @@ const Product = ({ product }) => {
                 </Typography>
                 <p
                   style={{
-                    fontSize: "18px",
+                    fontSize:  smDown?"16px":"18px",
                     fontWeight: 500,
                     marginBottom: "25px",
                   }}
@@ -225,7 +228,7 @@ const Product = ({ product }) => {
                   <Typography
                     variant="body2"
                     style={{
-                      fontSize: "24px",
+                      fontSize:  smDown?"18px":"24px",
                       fontWeight: 600,
                       marginBottom: "10px",
                     }}
@@ -234,7 +237,7 @@ const Product = ({ product }) => {
                   </Typography>
                   <pre
                     style={{
-                      fontSize: "18px",
+                      fontSize:  smDown?"16px":"18px",
                       fontWeight: 500,
                       marginBottom: "25px",
                       whiteSpace: "pre-wrap",
@@ -250,7 +253,7 @@ const Product = ({ product }) => {
                   <Typography
                     variant="body2"
                     style={{
-                      fontSize: "24px",
+                      fontSize:  smDown?"18px":"24px",
                       fontWeight: 600,
                       marginBottom: "10px",
                     }}
@@ -259,7 +262,7 @@ const Product = ({ product }) => {
                   </Typography>
                   <pre
                     style={{
-                      fontSize: "18px",
+                      fontSize:  smDown?"16px":"18px",
                       fontWeight: 500,
                       marginBottom: "25px",
                       whiteSpace: "pre-wrap",
@@ -275,7 +278,7 @@ const Product = ({ product }) => {
                   <Typography
                     variant="body2"
                     style={{
-                      fontSize: "24px",
+                      fontSize:  smDown?"18px":"24px",
                       fontWeight: 600,
                       marginBottom: "10px",
                     }}
@@ -287,10 +290,10 @@ const Product = ({ product }) => {
                       <>
                       <Grid container columnSpacing={1}>
                         <Grid item xs={6}>
-                          <p>{item.title}:</p>
+                          <p style={{ fontSize:  smDown?"14px":"16px",borderRight:"1px solid grey",wordWrap:"break-word"}}>{item.title}:</p>
                         </Grid>
                         <Grid item xs={6}>
-                          <p>{item.value}</p>
+                          <p style={{ fontSize:  smDown?"14px":"16px",}}>{item.value}</p>
                         </Grid>
                       </Grid>
                       <Divider/>

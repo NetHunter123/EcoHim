@@ -1,6 +1,14 @@
 import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
+  mainWrapper:{
+    [theme.breakpoints.down("md")]: {
+      padding:"15px 10px"
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding:"15px 5px"
+    },
+  },
   categoryBox: {
     backgroundColor: theme.palette.primary.main,
     borderRadius: "20px",

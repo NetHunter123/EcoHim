@@ -13,9 +13,9 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        {/*<AnimatePresence exitBeforeEnter>*/}
-        <Component {...pageProps} />
-        {/*</AnimatePresence>*/}
+          {/*<AnimatePresence exitBeforeEnter>*/}
+          <Component {...pageProps} />
+          {/*</AnimatePresence>*/}
       </ThemeProvider>
     </Provider>
   );

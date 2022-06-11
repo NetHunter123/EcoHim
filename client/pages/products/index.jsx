@@ -27,25 +27,24 @@ import Counter from "../../components/Counter";
 
 const Index = () => {
   const products = useSelector((state) => state.products.products);
-  // const cartItemsRedux = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const router = useRouter();
   let cartItems = [];
 
-
   useEffect(() => {
     try {
       cartItems = JSON.parse(localStorage.getItem("cartItems"));
-      console.log("Try",cartItems)
-    }catch (e) {
-      console.log(e)
-      cartItems = []
-      console.log("ErrorCatch",cartItems,"Error",e)
+      console.log("Try", cartItems);
+    } catch (e) {
+      console.log(e);
+      cartItems = [];
+      console.log("ErrorCatch", cartItems, "Error", e);
     }
     products.length === 0 &&
-    dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
+      dispatch(
+        GetProductFetch("http://localhost:1337/api/products?populate=*")
+      );
   }, []);
-
 
   const AddToCart = (e) => {
     console.log("click", e);
@@ -76,18 +75,18 @@ const Index = () => {
   return (
     <>
       <MainLayout>
-        <Grid container spacing={2} sx={{ p: 3 }}>
-          <Grid item container xs={9} spacing={2}>
+        <Grid container spacing={2} sx={{ p: 2 }} flexWrap={"wrap-reverse"}>
+          <Grid item container xs={12} md={7} lg={9} spacing={2}>
             {products?.map(({ attributes }) => {
               return (
                 <>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} sm={6} md={6} lg={4}>
                     <Card
                       sx={{
                         maxWidth: "100%",
                         width: "100%",
                         borderRadius: "10px",
-                        height: "400px",
+                        height: "440px",
                         padding: "10px",
                         display: "flex",
                         flexDirection: "column",
@@ -106,19 +105,31 @@ const Index = () => {
                           borderRadius: "10px",
                         }}
                       >
-                        <CardMedia
-                          component="img"
-                          height="200px"
-                          width="100%"
-                          image={
-                            "http://localhost:1337" +
-                            attributes?.image.data.attributes?.url
-                          }
-                          alt={
-                            attributes?.image.data.attributes?.alternativeText
-                          }
-                          style={{ borderRadius: "10px" }}
-                        />
+                        <Box
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            minHeight: "200px",
+                            width: "100%",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          <CardMedia
+                            component="img"
+                            height="200px"
+                            width="100%"
+                            image={
+                              "http://localhost:1337" +
+                              attributes?.image.data?.attributes?.url
+                            }
+                            alt={
+                              attributes?.image.data?.attributes?.alternativeText
+                            }
+                            style={{ borderRadius: "10px" }}
+                          />
+                        </Box>
                         <CardContent
                           style={{
                             padding: "10px 10px 6px",
@@ -139,7 +150,9 @@ const Index = () => {
                               fontWeight: 600,
                             }}
                           >
-                            {attributes?.title}
+                            {attributes?.title.length <= 60
+                              ? attributes?.title
+                              : attributes?.title.slice(0, 60) + "..."}
                           </Typography>
                           <Box
                             style={{
@@ -149,10 +162,14 @@ const Index = () => {
                               fontSize: "16px",
                             }}
                           >
-                            <Available available={attributes?.availability} />
+                            <Available available={attributes.availability} />
                             <Typography
                               variant={"caption"}
-                              style={{ display: "block", wordWrap: "wrap",fontSize: "14px"  }}
+                              style={{
+                                display: "block",
+                                wordWrap: "wrap",
+                                fontSize: "14px",
+                              }}
                               component="div"
                             >
                               {attributes?.saleType}
@@ -188,21 +205,28 @@ const Index = () => {
               );
             })}
           </Grid>
-          <Grid item xs={3} style={{ position: "relative" }}>
+          <Grid item xs={12} md={5} lg={3} style={{ position: "relative" }}>
             <Box
               style={{
                 backgroundColor: "white",
                 borderRadius: "15px",
-                height: "86%",
+                height: "fit-content",
 
-                width: "340px",
+                width: "100%",
+                position: "sticky",
+                top: "75px",
                 padding: "20px",
-                position: "fixed",
-                right: "10px",
-
               }}
             >
-              <Box style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom: "20px",}}>
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                  flexWrap:"wrap"
+                }}
+              >
                 <Typography
                   gutterBottom
                   variant="h5"
@@ -217,7 +241,11 @@ const Index = () => {
                 </Typography>
                 <CategoryBtn
                   onClick={() => {
-                    dispatch(GetProductFetch("http://localhost:1337/api/products?populate=*"));
+                    dispatch(
+                      GetProductFetch(
+                        "http://localhost:1337/api/products?populate=*"
+                      )
+                    );
                   }}
                   sx={{
                     width: "fit-content",

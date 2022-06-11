@@ -2,7 +2,7 @@ import React from "react";
 import Login from "./auth/login";
 import MainLayout from "../layout/MainLayout";
 import AboutUs from "./aboutUs";
-import { Box, Button, Grid, Paper, Typography } from "@mui/material";
+import {Box, Button, Grid, Paper, Typography, useMediaQuery} from "@mui/material";
 import { animate, motion } from "framer-motion";
 import Image from "next/image";
 import { makeStyles } from "@material-ui/styles";
@@ -16,11 +16,15 @@ import useStyles from "../styles/homeStyle";
 import NextLink from "next/link";
 import {GetProductFetch} from "../actions";
 import {useDispatch} from "react-redux";
+import {useTheme} from "@mui/material/styles";
 
 const Index = () => {
   let easing = [0.6, -0.05, 0.01, 0.99];
   const classes = useStyles();
   const dispatch = useDispatch()
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const fadeInRight = {
     initial: {
@@ -64,8 +68,8 @@ const Index = () => {
   return (
     <>
       <MainLayout>
-        <Grid container rowSpacing={1} sx={{ p: 3 }}>
-          <Grid item container xs={12} columnSpacing={1}>
+        <Grid className={classes.mainWrapper} container rowSpacing={1} sx={{ p: 3 }}>
+          <Grid item container xs={12} spacing={1}>
             <Grid item xs={12} md={8} onClick={async ()=>{
              await dispatch(
                 GetProductFetch(
@@ -90,6 +94,7 @@ const Index = () => {
                     <Typography fontSize={16} fontWeight={600}>
                       Клей ПВА дисперсія в промисловій тарі
                     </Typography>
+                    { !smDown &&
                     <Typography paragraph fontSize={14}>
                       <b>Транспортування:</b> Наша компанія пластифіковану
                       дисперсію транспортує за температури не нижче плюс 5°С.
@@ -97,7 +102,7 @@ const Index = () => {
                       Зберігати дисперсію необхідно за температури не нижче плюс
                       5°С у щільно закритій тарі. Гарантійний термін зберігання
                       - 6 місяців з дати виробництва.
-                    </Typography>
+                    </Typography>}
                   </Box>
                 </div>
               </NextLink>
@@ -158,6 +163,7 @@ const Index = () => {
                   <Typography fontSize={16} fontWeight={600}>
                     Будівельні оздоблювальні матеріали
                   </Typography>
+                  { !smDown &&
                   <Typography paragraph fontSize={14}>
                     <b>Виробнича компанія «ЕКОХІМ-ІФ»</b> пропонує вашій увазі
                     вододисперсійні матеріали торгової марки <b>Tim-color</b>.
@@ -166,13 +172,13 @@ const Index = () => {
                     вінілові; структурні фарби та рельєфні.
                     <br /> З питань підбору матеріалу звертайтеся до менеджерів
                     нашої компанії.
-                  </Typography>
+                  </Typography>}
                 </Box>
               </div>
             </NextLink>
           </Grid>
-          <Grid item container xs={12} columnSpacing={1}>
-            <Grid item xs={4}>
+          <Grid item container xs={12} spacing={1}>
+            <Grid item xs={12} md={4}>
               <NextLink href="/manufacture" passHref>
                 <div className={classes.textBoxWrapper}>
                   <Box className={classes.categoryBox}>
@@ -194,7 +200,7 @@ const Index = () => {
                 </div>
               </NextLink>
             </Grid>
-            <Grid item xs={8} onClick={async ()=>{
+            <Grid item xs={12} md={8} onClick={async ()=>{
              await dispatch(
                 GetProductFetch(
                   `http://localhost:1337/api/products?populate=*&filters[category][$eq]=Трубопровідна та запірна арматура`
@@ -218,13 +224,14 @@ const Index = () => {
                     <Typography fontSize={16} fontWeight={600}>
                       Трубопровідна та запірна арматура
                     </Typography>
+                    { !smDown &&
                     <Typography paragraph fontSize={14}>
                       Трубопровідна арматура призначений для управління потоками
                       рідин, газів і сипких матеріалів по трубопроводах. Дана
                       продукція застосовується в сфері видобутку нафти і газу,
                       їх переробці, тепло - і електроенергетиці, хімічній
                       промисловості.
-                    </Typography>
+                    </Typography>}
                   </Box>
                 </div>
               </NextLink>

@@ -27,12 +27,14 @@ import NextLink from "next/link";
 import MenuItem from "./MenuItem";
 import { ExpandLess, ExpandMore, ShoppingCart } from "@mui/icons-material";
 import { useState } from "react";
-import { Collapse } from "@mui/material";
+import { Button, Collapse, useMediaQuery } from "@mui/material";
 import Head from "next/head";
 import { useDispatch } from "react-redux";
 import { GetProductFetch, ProductFetch } from "../actions";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useRouter } from "next/router";
+import { useStyles } from "../styles/layout";
+import Typography from "@mui/material/Typography";
 
 const drawerWidth = 340;
 
@@ -101,20 +103,6 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const useStyles = makeStyles((theme) => ({
-  Appclass: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  sideBar: {
-    position: "fixed",
-    left: "0",
-    top: "0",
-    zIndex: "100",
-  },
-
-  drawerWrapper: {},
-}));
-
 export default function TopLayout({ children }) {
   let easing = [0.6, -0.05, 0.01, 0.99];
   const classes = useStyles();
@@ -122,6 +110,7 @@ export default function TopLayout({ children }) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const hovers = {
     initial: {
@@ -171,21 +160,17 @@ export default function TopLayout({ children }) {
         bgcolor={"#E1E1E1"}
       >
         <CssBaseline />
-        <AppBar className={classes.Appclass} position="fixed" open={open}>
-          <Toolbar
-            sx={{
-              paddingRight: "5px",
-              justifyContent: "space-between",
-              padding: "5px 0",
-            }}
-          >
+        <AppBar className={classes.appBar} position="fixed" open={open}>
+          <Toolbar className={classes.appToolbar}>
+            { !open &&
             <IconButton
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
+              className={classes.menuBtn}
               sx={{
-                marginRight: 5,
+                // marginRight: 5,
                 ...(open && { display: "none" }),
               }}
               component={motion.div}
@@ -193,45 +178,58 @@ export default function TopLayout({ children }) {
             >
               <MenuIcon />
             </IconButton>
+            }
 
-            <Logo />
-            <NextLink href="/cart" passHref>
-              <NavigationBtn
-                onClick={() => router.push("/cart")}
-                variant={"outlined"}
-                color={"primary"}
-                style={{
-                  marginRight: "15px",
-                  padding: "10px",
-                }}
-              >
-                <ShoppingCart sx={{ display: "block", color: "white" }} />
-              </NavigationBtn>
-            </NextLink>
-
+            { !open &&
+              <Logo/>
+            }
+            {!smDown && (
+              <NextLink href="/cart" passHref>
+                <Button
+                  className={classes.btn}
+                  onClick={() => router.push("/cart")}
+                  variant={"outlined"}
+                  color={"primary"}
+                  style={{
+                    marginRight: "15px",
+                    padding: "10px",
+                  }}
+                >
+                  <ShoppingCart sx={{ display: "block", color: "white" }} />
+                </Button>
+              </NextLink>
+            )}
             <NextLink href="/auth/login" passHref>
-              <NavigationBtn
+              <Button
+                className={classes.btn}
                 variant={"outlined"}
                 color={"primary"}
-                sx={{}}
-                text={"Sign IN"}
               >
-                <AccountCircleIcon
-                  sx={{ display: "block", color: "white", marginRight: "5px" }}
-                />
-              </NavigationBtn>
+                <AccountCircleIcon sx={{ display: "block", color: "white" }} />
+                <Typography
+                  paragraph
+                  display={!smDown ? "block" : "none"}
+                  sx={{ margin: "0", color: "white", marginLeft: "5px" }}
+                >
+                  Sign IN
+                </Typography>
+              </Button>
             </NextLink>
           </Toolbar>
         </AppBar>
-        <Box
-          className={classes.drawerWrapper}
-          sx={{ width: "66px" }}
-          sm={{ width: "74px" }}
-        >
-          {" "}
-        </Box>
+        {/*<Box*/}
+        {/*  className={classes.drawerWrapper}*/}
+        {/*  sx={{  }}*/}
+        {/*  sm={{ width: "74px" }}*/}
+        {/*>*/}
+        {/*</Box>*/}
         <Drawer className={classes.sideBar} variant="permanent" open={open}>
-          <DrawerHeader>
+          <DrawerHeader style={{padding:"0 5px 0 5px"}}>
+            { open &&
+              <Box style={{margin:"0 auto"}}>
+              <Logo />
+              </Box>
+            }
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "rtl" ? (
                 <ChevronRightIcon />
@@ -341,8 +339,32 @@ export default function TopLayout({ children }) {
                 </ListItemButton>
               </NextLink>
             </ListItem>
+            <Divider />
+            {smDown && (
+              <NextLink href="/cart" passHref>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ShoppingCart sx={{ display: "block" }} />
+                  </ListItemIcon>
+                  <ListItemText sx={{ opacity: open ? 1 : 0 }}>
+                    Корзина
+                  </ListItemText>
+                </ListItemButton>
+              </NextLink>
+            )}
           </List>
-          <Divider />
         </Drawer>
         <Box
           component="main"
@@ -351,7 +373,7 @@ export default function TopLayout({ children }) {
         >
           <DrawerHeader />
           {/*<div style={{ overflowX: "hidden" }}>*/}
-          {children}
+          <Box className={classes.contentWrapper}>{children}</Box>
           {/*</div>*/}
         </Box>
       </Box>

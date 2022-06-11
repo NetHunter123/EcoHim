@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../styles/footer.module.css";
 import { makeStyles } from "@material-ui/styles";
 import Logo from "./Logo";
-import { Box } from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import NavigationBtn from "./NavigationBtn";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NextLink from "next/link";
@@ -20,6 +20,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  btn: {
+    display: "flex",
+    alignItems: "center",
+    border:"1px solid ",
+    borderColor: "white",
+    padding: "10px 15px",
+    '&:hover': {
+      borderColor: "aqua ",
+    },
+  },
 }));
 
 const Footer = () => {
@@ -32,29 +42,37 @@ const Footer = () => {
       </Box>
       <Box style={{ display: "flex", height: "60px", alignItems: "center" }}>
         <NextLink href="/auth/login" passHref>
-          <NavigationBtn
+          <Button
+            className={classes.btn}
             variant={"text"}
             color={"primary"}
             sx={{ height: "50px" }}
-            text={"Sign In"}
+            style={{border:"0px"}}
           >
             <AccountCircleIcon
               sx={{ display: "block", color: "white", marginRight: "5px" }}
             />
-          </NavigationBtn>
+            <Typography paragraph sx={{ margin: "0", color: "white" }}>
+              Sign IN
+            </Typography>
+          </Button>
         </NextLink>
         <p style={{ color: "white", fontSize: "24px" }}>|</p>
         <NextLink href="/auth/register" passHref>
-          <NavigationBtn
+          <Button
+            className={classes.btn}
             variant={"text"}
             color={"primary"}
             sx={{ height: "50px" }}
-            text={"Sign Up"}
+            style={{border:"0px"}}
           >
             <AccountCircleIcon
               sx={{ display: "block", color: "white", marginRight: "5px" }}
             />
-          </NavigationBtn>
+            <Typography paragraph sx={{ margin: "0", color: "white" }}>
+              Sign Up
+            </Typography>
+          </Button>
         </NextLink>
       </Box>
     </footer>

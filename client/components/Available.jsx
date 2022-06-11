@@ -3,9 +3,10 @@ import { Typography } from "@mui/material";
 
 import useStyles from "../styles/productsPage";
 
-const Available = (available) => {
+const Available = ({available}) => {
   const classes = useStyles();
 
+  console.log("Available",available)
   return (
     <Typography
       variant={"caption"}
