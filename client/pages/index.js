@@ -66,7 +66,7 @@ const Index = () => {
       <MainLayout>
         <Grid container rowSpacing={1} sx={{ p: 3 }}>
           <Grid item container xs={12} columnSpacing={1}>
-            <Grid item xs={8} onClick={async ()=>{
+            <Grid item xs={12} md={8} onClick={async ()=>{
              await dispatch(
                 GetProductFetch(
                   `http://localhost:1337/api/products?populate=*&filters[category][$eq]=Клей ПВА дисперсія в промисловій тарі`
@@ -102,7 +102,7 @@ const Index = () => {
                 </div>
               </NextLink>
             </Grid>
-            <Grid item xs={4}  onClick={async ()=>{
+            <Grid item xs={12} md={4}  onClick={async ()=>{
              await dispatch(
                 GetProductFetch(
                   `http://localhost:1337/api/products?populate=*&filters[category][$eq]=Клей ПВА в розфасовці`
