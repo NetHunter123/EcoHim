@@ -71,12 +71,6 @@
       "type": "string",
       "minLength": 1
     },
-    "cart": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::cart.cart",
-      "inversedBy": "userCartUID"
-    },
     "orders": {
       "type": "relation",
       "relation": "oneToMany",

@@ -21,11 +21,36 @@ import Router from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { userService } from "../../services/user-service";
 import Copyright from "../../components/Copyright";
+import { styled } from "@mui/material/styles";
+import { makeStyles } from "@material-ui/styles";
+import { useTheme } from "@mui/material/styles";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    "& input:valid + fieldset": {
+      borderColor: "green",
+      borderWidth: 1,
+    },
+    "& input:invalid + fieldset": {
+      borderColor: "red",
+      borderWidth: 1,
+    },
+    "& input:valid:focus + fieldset": {
+      borderLeftWidth: 3,
+      padding: "4px !important", // override inline-style
+    },
+  },
+}));
 
 const theme = createTheme();
 
 const Login = () => {
-  let submitting = false;
+  const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
+  const [pass, setPass] = useState("");
+  const [passError, setPassError] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,14 +64,31 @@ const Login = () => {
     });
 
     console.log("login status", status);
-    status ? (submitting = true) : (submitting = false);
+    // status ? (submitting = true) : (submitting = false);
     const temp = localStorage.getItem("user");
     const user = JSON.parse(temp);
 
     console.log("Congratulation:", user);
     console.log("jwt:", user?.jwt);
 
-    user?.jwt ? Router.push("/") : console.log("Error login");
+    if ( user?.jwt!=undefined && user?.jwt) {
+      Router.push("/");
+    } else {
+      console.log("Error login");
+      alert("Будьласка введіть вірні дані")
+    }
+  };
+
+  const handleEmailValid = (e) => {
+    setEmail(e.target.value);
+    const reg = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    setError(reg.test(e.target.value));
+  };
+
+  const handlePassValid = (e) => {
+    setPass(e.target.value);
+    const reg = new RegExp("^.{6,}$");
+    setPassError(reg.test(e.target.value));
   };
 
   return (
@@ -92,21 +134,29 @@ const Login = () => {
               sx={{ mt: 1 }}
             >
               <TextField
+                className={classes.textField}
+                name="email"
+                label="Email Address"
+                variant={"outlined"}
                 margin="normal"
-                required
                 fullWidth
                 id="email"
-                label="Email Address"
-                name="email"
+                value={email}
+                onChange={(e) => handleEmailValid(e)}
+                error={!error}
                 autoComplete="email"
                 autoFocus
               />
               <TextField
-                margin="normal"
-                required
-                fullWidth
+                className={classes.textField}
                 name="password"
                 label="Password"
+                variant={"outlined"}
+                margin="normal"
+                value={pass}
+                onChange={(e) => handlePassValid(e)}
+                error={!passError}
+                fullWidth
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -119,9 +169,10 @@ const Login = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={!error || !passError}
                 sx={{ mt: 3, mb: 2 }}
               >
-                {submitting ? 'In progress…' : 'Sign In'}
+                Sign In
               </Button>
               <Grid container>
                 <Grid item xs>

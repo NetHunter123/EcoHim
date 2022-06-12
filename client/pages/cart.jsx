@@ -11,24 +11,29 @@ import {
   Grid,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import Available from "../components/Available";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartItems } from "../actions";
 import Counter from "../components/Counter";
 import Checkout from "../components/Checkout";
+import { useTheme } from "@mui/material/styles";
 
 const Cart = () => {
   const router = useState();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const theme = useTheme();
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const getItems = () => {
-    let getCartItems
+    let getCartItems;
     try {
       getCartItems = JSON.parse(localStorage.getItem("cartItems"));
-    }catch (e) {
-      console.log(e)
-      getCartItems = []
+    } catch (e) {
+      console.log(e);
+      getCartItems = [];
     }
 
     console.log("getcartItemsinCart", getCartItems);
@@ -62,38 +67,39 @@ const Cart = () => {
       orderListText?.forEach((item) => {
         sendText += `${item}\n`;
       });
-        sendText += `Загальна сума:${totalPrice}`;
-    }else {
-      sendText = " "
+      sendText += `Загальна сума:${totalPrice}`;
+    } else {
+      sendText = " ";
     }
 
     console.log("sendText", sendText);
-    return {sendText,orderListText};
+    return { sendText, orderListText };
   };
 
-  const dell=(slug)=>{
-    const filteredItems = cartItems.filter((item)=> item.slug != slug)
-    console.log("filteredItems",filteredItems)
+  const dell = (slug) => {
+    const filteredItems = cartItems.filter((item) => item.slug != slug);
+    console.log("filteredItems", filteredItems);
     dispatch(setCartItems(filteredItems));
-  }
+  };
   return (
     <MainLayout>
       <Box
         style={{
-          minHeight: "100%",
+          minHeight: "85vh",
           display: "flex",
           justifyContent: "center",
+          marginBottom: "30px",
         }}
-        sx={{ p: 3 }}
+        sx={{ p: smDown ? 1 : 3 }}
       >
         <Box
           style={{
-            minHeight: "80%",
+            minHeight: "100%",
             backgroundColor: "#fff",
-            width: "80%",
+            width: mdDown ? "100%" : "80%",
             borderRadius: "20px",
-            padding: "20px",
-            marginBottom: "65px",
+            padding:smDown? "10px": "20px",
+
             display: "flex",
             flexDirection: "column",
           }}
@@ -113,7 +119,6 @@ const Cart = () => {
             style={{
               display: "flex",
               justifyContent: "center",
-              minHeight: "85%",
             }}
           >
             {cartItems?.length != 0 && cartItems != undefined ? (
@@ -129,15 +134,16 @@ const Cart = () => {
                         maxWidth: "100%",
                         width: "100%",
                         borderRadius: "10px",
-                        minHeight: "200px",
-                        maxHeight: "250px",
+                        minHeight: smDown ? "auto" : "200px",
+                        maxHeight: smDown ? "auto" : "250px",
 
                         display: "flex",
                         alignItems: "center",
+                        flexDirection: !smDown ? "row" : "column",
                         fontFamily: "'Montserrat', sans-serif",
                       }}
                     >
-                      <Grid item xs={5}>
+                      <Grid item xs={12} sm={5}>
                         <CardMedia
                           component="img"
                           height="200px"
@@ -151,7 +157,7 @@ const Cart = () => {
                           style={{ borderRadius: "10px" }}
                         />
                       </Grid>
-                      <Grid item xs={7}>
+                      <Grid item xs={12} sm={7}>
                         <Box
                           style={{
                             display: "flex",
@@ -183,8 +189,8 @@ const Cart = () => {
                               alignItems: "center",
                               justifyContent: "space-between",
                               width: "100%",
-                              flexWrap:"wrap",
-                              marginBottom:"10px"
+                              flexWrap: "wrap",
+                              marginBottom: "10px",
                             }}
                           >
                             <Typography
@@ -208,12 +214,25 @@ const Cart = () => {
                               {attributes?.price + " " + attributes?.valueType}
                             </Typography>
                           </Box>
-                          <Box style={{ display: "flex", justifyContent: "space-between",width:"100%" }}>
-                            <Counter price={attributes.price} item={attributes} />
-                            <Button onClick={()=>{
-                              dell(attributes.slug)
-                            }
-                            }>Видалити</Button>
+                          <Box
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
+                          >
+                            <Counter
+                              price={attributes.price}
+                              item={attributes}
+                            />
+                            <Button
+                              onClick={() => {
+                                dell(attributes.slug);
+                              }}
+                            >
+                              Видалити
+                            </Button>
                           </Box>
                         </Box>
                       </Grid>
@@ -222,7 +241,9 @@ const Cart = () => {
                 );
               })
             ) : (
-              <Typography style={{ margin: "auto 0" }}>
+              <Typography
+                style={{ marginTop: "100px", height: "fit-content" }}
+              >
                 ваша корзина пуста
               </Typography>
             )}
@@ -232,7 +253,10 @@ const Cart = () => {
           {/*}} style={{ marginTop: "auto", backgroundColor: "green",color:"white" }}>*/}
           {/*  Оформити замовлення*/}
           {/*</Button>*/}
-          <Checkout text={orderList} />
+
+          <Box style={{marginTop:"auto",width:"100%"}}>
+            <Checkout text={orderList} />
+          </Box>
         </Box>
       </Box>
     </MainLayout>

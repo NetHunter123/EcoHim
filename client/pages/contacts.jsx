@@ -1,7 +1,8 @@
 import React from "react";
 import MainLayout from "../layout/MainLayout";
-import { Grid, Typography } from "@mui/material";
+import {Grid, Typography, useMediaQuery} from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
+import {useTheme} from "@mui/material/styles";
 
 const useStyles = makeStyles((theme) => ({
   sectionTitle: {
@@ -22,12 +23,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Contacts = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
       <MainLayout>
-        <Grid container spacing={3} sx={{p:3}}>
-          <Grid item xs={4}>
+        <Grid container spacing={3} sx={{p:smDown?1:3}} style={{backgroundColor:"#fff"}}>
+          <Grid item xs={12} sm={6} md={4} >
             <Typography component={"h3"} className={classes.sectionTitle}>
               Контакти:
             </Typography>
@@ -123,7 +127,7 @@ const Contacts = () => {
             </Typography>
           </Grid>
 
-          <Grid item xs={8}>
+          <Grid item xs={12} sm={6} md={8}>
             <Typography component={"h3"} className={classes.sectionTitle}>
               Місцезнаходження компанії:
             </Typography>
@@ -137,7 +141,7 @@ const Contacts = () => {
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2621.7967994089613!2d24.70466040165982!3d48.919263581196724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4730c140f9071b8d%3A0xa0cf6f1bc47f9ff!2z0JXQmtCe0KXQhtCcLdCG0KQg0KLQntCS!5e0!3m2!1suk!2sua!4v1653779541899!5m2!1suk!2sua"
               width="100%"
-              height="570"
+              height= {smDown?"250": "570"}
               style={{ border: "0" }}
               allowFullScreen=""
               loading="lazy"

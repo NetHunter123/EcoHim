@@ -20,6 +20,9 @@ const Product = ({ product }) => {
   useEffect(() => {
     try {
       cartItems = JSON.parse(localStorage.getItem("cartItems"));
+      if (cartItems==null || cartItems==undefined){
+       cartItems = []
+      }
       console.log("Try", cartItems);
     } catch (e) {
       console.log(e);
@@ -31,15 +34,14 @@ const Product = ({ product }) => {
 
   const AddToCart = (e) => {
     console.log("click", e);
-    // products.map(({ attributes }) => {
-    let inCart;
+
+    let inCart = false;
     cartItems.map((item) => {
       if (item.slug === e.slug) {
         inCart = true;
       }
     });
     !inCart && cartItems.push(e);
-    // });
 
     console.log("cartItemsindex", cartItems);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));

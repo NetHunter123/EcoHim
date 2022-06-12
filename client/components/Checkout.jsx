@@ -80,7 +80,7 @@ export default function Checkout({ text }) {
         onClick={() => {
           handleClickOpen();
         }}
-        style={{ borderRadius: "20px" }}
+        style={{ borderRadius: "20px",width:"100%" }}
         disabled={sendText === " "? true:false }
       >
         Оформити замовлення
