@@ -111,11 +111,12 @@ export default function TopLayout({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  // const cartItems = useSelector((state) => state.cart.cartItems);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [cartItemsCount,setCartItemsCount] = useState(0)
 
   useEffect(()=>{
-    setCartItemsCount(cartItems.length)
+    setCartItemsCount(cartItems?.length)
   },[cartItems])
 
   const hovers = {
@@ -199,10 +200,11 @@ export default function TopLayout({ children }) {
                   style={{
                     marginRight: "15px",
                     padding: "10px",
+                    position:"relative"
                   }}
                 >
-                  <Box color={"white"}>
-                    {cartItemsCount}
+                  <Box color={"white"} fontSize={"20px"} style={{position:"absolute",top:"-3px",right:"5px"}}>
+                    {cartItemsCount==0?"":"!"}
                   </Box>
                   <ShoppingCart sx={{ display: "block", color: "white" }} />
                 </Button>

@@ -30,6 +30,9 @@ const Index = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   let cartItems = [];
+  const [cartContents,setCartContents ] = useState([])
+
+  // const cartItems = useSelector((state) => state.cart.cartItems);
 
   useEffect(() => {
     try {
@@ -49,25 +52,20 @@ const Index = () => {
       );
   }, []);
 
-  useEffect(()=>{
-    dispatch(setCartItems(cartItems));
-  },[cartItems])
 
   const AddToCart = (e) => {
     console.log("click", e);
-    // products.map(({ attributes }) => {
-    let inCart;
-    cartItems.map((item) => {
+    let inCart = false;
+    cartItems.length != 0 && cartItems.map((item) => {
       if (item.slug === e.slug) {
         inCart = true;
       }
     });
     !inCart && cartItems.push(e);
-    // });
-
     console.log("cartItemsindex", cartItems);
-
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    dispatch(setCartItems(cartItems));
+    // setCartContents(cartItems)
+    // localStorage.setItem("cartItems", JSON.stringify(cartItems));
     // dispatch(setCartItems(cartItems));
   };
 
