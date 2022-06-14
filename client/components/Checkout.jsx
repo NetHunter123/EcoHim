@@ -183,6 +183,14 @@ export default function Checkout({ text }) {
             className={classes.btn}
             type={"button"}
             style={{ margin: "0px" }}
+            disabled={
+            !name &&
+              !surname ||
+              !middleName ||
+              !email ||
+              !phone ||
+              !city ||
+              !warehouse}
             onClick={() => {
               console.log("Name", name);
               console.log("Surname", surname);
@@ -191,14 +199,10 @@ export default function Checkout({ text }) {
               console.log("Tell", phone);
               console.log("Сity", city?.title);
               console.log("WarehouseNp", warehouse?.title);
-              // name &&
-              //   surname &&
-              //   middleName &&
-              //   email &&
-              //   phone &&
-              //   city &&
-              //   warehouse &&
+
               sendForm();
+              alert("Дякуємо за ваше замовлення, очікуйте звінка оператора і подальших інструкцій")
+              handleClose();
             }}
           >
             Надіслати замовлення

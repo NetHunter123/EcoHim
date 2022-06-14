@@ -11,9 +11,9 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-i18n": "4.1.11",
-    "@strapi/plugin-users-permissions": "4.1.11",
-    "@strapi/strapi": "4.1.11",
+    "@strapi/plugin-i18n": "4.1.12",
+    "@strapi/plugin-users-permissions": "4.1.12",
+    "@strapi/strapi": "4.1.12",
     "better-sqlite3": "7.4.6",
     "strapi-plugin-entity-relationship-chart": "^4.1.0"
   },
@@ -21,7 +21,7 @@
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "0bc19ece-167b-4d9d-9b08-9cb5f1a45a91"
+    "uuid": "6c75ef5a-ce75-4041-8124-84e5fd64077e"
   },
   "engines": {
     "node": ">=12.x.x <=16.x.x",

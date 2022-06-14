@@ -26,10 +26,10 @@ import CategoryIcon from "@mui/icons-material/Category";
 import NextLink from "next/link";
 import MenuItem from "./MenuItem";
 import { ExpandLess, ExpandMore, ShoppingCart } from "@mui/icons-material";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button, Collapse, useMediaQuery } from "@mui/material";
 import Head from "next/head";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { GetProductFetch, ProductFetch } from "../actions";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useRouter } from "next/router";
@@ -111,6 +111,12 @@ export default function TopLayout({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const [cartItemsCount,setCartItemsCount] = useState(0)
+
+  useEffect(()=>{
+    setCartItemsCount(cartItems.length)
+  },[cartItems])
 
   const hovers = {
     initial: {
@@ -195,6 +201,9 @@ export default function TopLayout({ children }) {
                     padding: "10px",
                   }}
                 >
+                  <Box color={"white"}>
+                    {cartItemsCount}
+                  </Box>
                   <ShoppingCart sx={{ display: "block", color: "white" }} />
                 </Button>
               </NextLink>

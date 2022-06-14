@@ -240,6 +240,7 @@ const Register = () => {
                 name="password"
                 label="Password"
                 type="password"
+                placeholder={"******"}
                 value={pass}
                 onChange={(e) => handlePassValid(e)}
                 error={!passError}

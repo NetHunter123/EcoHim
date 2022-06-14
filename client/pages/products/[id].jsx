@@ -3,7 +3,7 @@ import MainLayout from "../../layout/MainLayout";
 import {Box, Button, CardMedia, Divider, Grid, Stack, Typography, useMediaQuery} from "@mui/material";
 import axios from "axios";
 import Available from "../../components/Available";
-import { GetProductFetch } from "../../actions";
+import {GetProductFetch, setCartItems} from "../../actions";
 import { useDispatch } from "react-redux";
 import NextLink from "next/link";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
@@ -44,6 +44,7 @@ const Product = ({ product }) => {
     !inCart && cartItems.push(e);
 
     console.log("cartItemsindex", cartItems);
+    dispatch(setCartItems(cartItems));
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     // dispatch(setCartItems(cartItems));
   };

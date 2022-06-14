@@ -34,6 +34,9 @@ const Index = () => {
   useEffect(() => {
     try {
       cartItems = JSON.parse(localStorage.getItem("cartItems"));
+      if (cartItems==null){
+        cartItems=[]
+      }
       console.log("Try", cartItems);
     } catch (e) {
       console.log(e);
@@ -45,6 +48,10 @@ const Index = () => {
         GetProductFetch("http://localhost:1337/api/products?populate=*")
       );
   }, []);
+
+  useEffect(()=>{
+    dispatch(setCartItems(cartItems));
+  },[cartItems])
 
   const AddToCart = (e) => {
     console.log("click", e);
@@ -59,6 +66,7 @@ const Index = () => {
     // });
 
     console.log("cartItemsindex", cartItems);
+
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     // dispatch(setCartItems(cartItems));
   };
